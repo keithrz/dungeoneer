@@ -16,7 +16,9 @@ declare module "dungeoneer" {
 
     // 'floor' and 'door' are passable terrain and a wall is impassable terrain.
     type: "wall" | "floor" | "door";
-  };
+    loot: boolean;
+    bigLoot: boolean;
+  }
 
   interface Tile extends PlainTile {
     toJS(): PlainTile;
@@ -41,15 +43,23 @@ declare module "dungeoneer" {
     intersects(other: Room): boolean;
   }
 
-  type Dungeon = {
+  interface PlainDungeon {
+    rooms: PlainRoom[];
+    tiles: Array<PlainTile[]>;
+    seed: string | number;
+  }
+
+  interface Dungeon {
     rooms: Room[];
     tiles: Array<Tile[]>;
     seed: string | number;
-  };
+    toJS: () => PlainDungeon;
+  }
 
   function build(options: {
-    width: number;
-    height: number;
+    level?: number;
+    width?: number;
+    height?: number;
     seed?: string | number;
   }): Dungeon;
 }
